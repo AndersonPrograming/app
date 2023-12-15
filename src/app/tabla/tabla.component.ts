@@ -53,18 +53,18 @@ export class TablaComponent implements AfterViewInit, OnInit{
     });
     console.log('url:',this.url);
     // this.service.filterData("Occidente", "CARZAR10").subscribe((data)=>{
-      this.service.filterData(this.url).subscribe((data)=>{
+    //   this.service.filterData(this.url).subscribe((data)=>{
 
-      this.DATA = data;
-      this.dataSource = new MatTableDataSource<data>(this.DATA);
-      this.dataSource.paginator = this.paginator;
-    })
-
-    // this.service.getData().subscribe((data)=>{
     //   this.DATA = data;
     //   this.dataSource = new MatTableDataSource<data>(this.DATA);
     //   this.dataSource.paginator = this.paginator;
-    // });
+    // })
+
+    this.service.getData().subscribe((data)=>{
+      this.DATA = data;
+      this.dataSource = new MatTableDataSource<data>(this.DATA);
+      this.dataSource.paginator = this.paginator;
+    });
 }
 
 
