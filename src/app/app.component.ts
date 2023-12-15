@@ -1,14 +1,29 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { GraficasComponent } from './graficas/graficas.component';
+import { TablaComponent } from './tabla/tabla.component';
+
 import { RouterOutlet } from '@angular/router';
+import { FiltroComponent } from './filtro/filtro.component';
+
+
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet],
+  imports: [CommonModule,RouterOutlet, GraficasComponent, TablaComponent, FiltroComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
-  title = 'app';
+export class AppComponent{
+
+  constructor(){}
+
+  cambiaLinea(){
+    const sel = document.getElementById("tronclaes");
+    console.log(sel);
+  }
+
+
 }

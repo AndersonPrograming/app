@@ -1,0 +1,346 @@
+<mat-form-field>
+  <mat-label>Troncal</mat-label>
+  <mat-select [(value)]="selected">
+    @for (food of troncales; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+
+@if(selected == 'Sur'){
+<mat-form-field>
+  <mat-label>Linea</mat-label>
+  <mat-select [(value)]="selectedSur">
+    @for (food of lineasSur; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+@if(selectedSur == 'AMAGUA10'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedSur1" multiple>
+    @for (food of sur1; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedSur1}} -->
+{{datosSeleccionados(selected,selectedSur, selectedSur1 )}}
+}@else if(selectedSur == 'COLLAG1210'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedSur2" multiple>
+    @for (food of sur2; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedSur2}} -->
+{{datosSeleccionados(selected,selectedSur, selectedSur2 )}}
+}@else if(selectedSur == 'COLORI12'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedSur3" multiple>
+    @for (food of sur3; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedSur3}} -->
+{{datosSeleccionados(selected,selectedSur, selectedSur3 )}}
+}@else if(selectedSur == 'GUAALI18'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedSur4" multiple>
+    @for (food of sur4; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedSur4}} -->
+{{datosSeleccionados(selected,selectedSur, selectedSur4 )}}
+}@else if(selectedSur == 'GUAJUN14'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedSur5" multiple>
+    @for (food of sur5; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedSur5}} -->
+{{datosSeleccionados(selected,selectedSur, selectedSur5 )}}
+}@else if(selectedSur == 'JUNGUA14'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedSur6" multiple>
+    @for (food of sur6; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedSur6}} -->
+{{datosSeleccionados(selected,selectedSur, selectedSur6 )}}
+}@else if(selectedSur == 'MANSAN6'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedSur7" multiple>
+    @for (food of sur7; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedSur7}} -->
+{{datosSeleccionados(selected,selectedSur, selectedSur7 )}}
+}@else if(selectedSur == 'PARAMA14'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedSur8" multiple>
+    @for (food of sur8; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedSur8}} -->
+{{datosSeleccionados(selected,selectedSur, selectedSur8 )}}
+}
+}@else if(selected === 'Caribe'){
+<mat-form-field>
+  <mat-label>Linea</mat-label>
+  <mat-select [(value)]="selectedCaribe">
+    @for (food of lineasCaribe; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+@if(selectedCaribe == 'CARBAR12'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCaribe1" multiple>
+    @for (food of caribe1; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCaribe1}} -->
+{{datosSeleccionados(selected,selectedCaribe, selectedCaribe1 )}}
+}@else if(selectedCaribe == 'COPAYA14'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCaribe2" multiple>
+    @for (food of caribe2; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCaribe2}} -->
+{{datosSeleccionados(selected,selectedCaribe, selectedCaribe2 )}}
+}@else if(selectedCaribe == 'POZCOP14'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCaribe3" multiple>
+    @for (food of caribe3; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCaribe3}} -->
+{{datosSeleccionados(selected,selectedCaribe, selectedCaribe3 )}}
+}
+}@else if(selected === 'Coveñas'){
+<mat-form-field>
+  <mat-label>Linea</mat-label>
+  <mat-select [(value)]="selectedCovenas">
+    @for (food of lineasCovenas; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+@if(selectedCovenas == 'RETCOV16'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCovenas1" multiple>
+    @for (food of covenas1; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCovenas1}} -->
+{{datosSeleccionados(selected,selectedCovenas, selectedCovenas1 )}}
+}
+}@else if(selected === 'Central'){
+<mat-form-field>
+  <mat-label>Linea</mat-label>
+  <mat-select [(value)]="selectedCentral">
+    @for (food of lineasCentral; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+@if(selectedCentral == 'FREHER68'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCentral1" multiple>
+    @for (food of central1; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCentral1}} -->
+{{datosSeleccionados(selected,selectedCentral, selectedCentral1 )}}
+}@else if(selectedCentral == 'GUANEI68'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCentral2" multiple>
+    @for (food of central2; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCentral2}} -->
+{{datosSeleccionados(selected,selectedCentral, selectedCentral2 )}}
+}@else if(selectedCentral == 'HERMAN68'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCentral3" multiple>
+    @for (food of central3; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCentral3}} -->
+{{datosSeleccionados(selected,selectedCentral, selectedCentral3 )}}
+}@else if(selectedCentral == 'MANCAR68'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCentral4" multiple>
+    @for (food of central4; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCentral4}} -->
+{{datosSeleccionados(selected,selectedCentral, selectedCentral4 )}}
+}@else if(selectedCentral == 'MARFRE68'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCentral5" multiple>
+    @for (food of central5; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCentral5}} -->
+{{datosSeleccionados(selected,selectedCentral, selectedCentral5 )}}
+}@else if(selectedCentral == 'SALGUA12'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedCentral6" multiple>
+    @for (food of central6; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedCentral6}} -->
+{{datosSeleccionados(selected,selectedCentral, selectedCentral6 )}}
+}
+}@else if(selected === 'Occidente'){
+<mat-form-field>
+  <mat-label>Linea</mat-label>
+  <mat-select [(value)]="selectedOccidente">
+    @for (food of lineasOccidente; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+@if(selectedOccidente == 'CARYUM10'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedOccidente1" multiple>
+    @for (food of occidente1; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedOccidente1}} -->
+{{datosSeleccionados(selected,selectedOccidente, selectedOccidente1 )}}
+}@else if(selectedOccidente == 'CARZAR10'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedOccidente2" multiple>
+    @for (food of occidente2; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedOccidente2}} -->
+{{datosSeleccionados(selected,selectedOccidente, selectedOccidente2 )}}
+}@else if(selectedOccidente == 'CISNCISV12'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedOccidente3" multiple>
+    @for (food of occidente3; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedOccidente3}} -->
+{{datosSeleccionados(selected,selectedOccidente, selectedOccidente3 )}}
+}@else if(selectedOccidente == 'CISVMED12'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedOccidente4" multiple>
+    @for (food of occidente4; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedOccidente4}} -->
+{{datosSeleccionados(selected,selectedOccidente, selectedOccidente4 )}}
+}@else if(selectedOccidente == 'GUAYUM68'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedOccidente5" multiple>
+    @for (food of occidente5; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedOccidente5}} -->
+{{datosSeleccionados(selected,selectedOccidente, selectedOccidente5 )}}
+}@else if(selectedOccidente == 'MEDCAR1012'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedOccidente6" multiple>
+    @for (food of occidente6; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedOccidente6}} -->
+{{datosSeleccionados(selected,selectedOccidente, selectedOccidente6 )}}
+}@else if(selectedOccidente == 'MULYUM6'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedOccidente7" multiple>
+    @for (food of occidente7; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedOccidente7}} -->
+{{datosSeleccionados(selected,selectedOccidente, selectedOccidente7 )}}
+}@else if(selectedOccidente == 'SEBSAN12'){
+<mat-form-field>
+  <mat-label>Corrida de referencia</mat-label>
+  <mat-select [(value)]="selectedOccidente8" multiple>
+    @for (food of occidente8; track food) {
+    <mat-option [value]="food.value">{{food.viewValue}}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
+<!-- {{selectedSur8}} -->
+{{datosSeleccionados(selected,selectedOccidente, selectedOccidente8 )}}
+}
+}

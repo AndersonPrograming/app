@@ -1,0 +1,41 @@
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  padding: 10px;
+}
+
+mat-table {
+  width: 1200px;
+  max-width: 1200px;
+  margin-bottom: 1rem;
+  display: table;
+  border-collapse: collapse;
+  margin: 0px;
+}
+
+table {
+  white-space: nowrap;
+}
+
+mat-row,
+mat-header-row {
+  display: table-row;
+}
+
+mat-cell,
+mat-header-cell {
+  word-wrap: initial;
+  display: table-cell;
+  padding: 0px 5px;
+  line-break: unset;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+th {
+  color: rgb(3, 114, 136);
+  font-weight: 350;
+}
