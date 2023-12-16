@@ -12,11 +12,12 @@ mat-table {
   display: table;
   border-collapse: collapse;
   margin: 0px;
-  font-size: 20px;
 }
 
+
+
 table {
-  white-space: max-content;
+  white-space: nowrap;
 }
 
 mat-row,
@@ -39,4 +40,22 @@ mat-header-cell {
 th {
   color: rgb(3, 114, 136);
   font-weight: 350;
+  font-size: .7rem;
+  border: 1px solid #ddd;
+}
+
+td {
+  font-size: .6rem;
+  border: 1px solid #ddd;
+}
+
+button {
+  font-size: .8rem;
+  margin-left: 10px;
+  padding: 10px;
+}
+
+
+button b {
+  font-style: normal;
 }

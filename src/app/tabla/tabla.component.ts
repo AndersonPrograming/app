@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatButtonModule} from '@angular/material/button';
 
 import {DataService} from '../services/data.service';
 import { CompartirService } from '../services/compartir.service';
@@ -14,7 +15,7 @@ import { data } from '../interfaces/data';
 @Component({
   selector: 'app-tabla',
   standalone: true,
-  imports: [CommonModule, MatPaginatorModule, MatTableModule],
+  imports: [CommonModule, MatPaginatorModule, MatTableModule, MatButtonModule],
   templateUrl: './tabla.component.html',
   styleUrl: './tabla.component.css',
   providers: [DataService],
@@ -30,6 +31,8 @@ export class TablaComponent implements AfterViewInit, OnDestroy{
     troncal_selected: string = "";
     linea_selected: string = "";
     corrida_selected: string[] = [];
+
+    corridaB: string[] = [];
 
     url: string = "";
 
@@ -51,10 +54,11 @@ export class TablaComponent implements AfterViewInit, OnDestroy{
     this.dataSource.paginator = this.paginator;
 
     // me suscribo al evento de compartir data que me trae las varibles del filtro
-    this.compartir.data.pipe(debounceTime(5000)).subscribe((data)=>{
+    this.compartir.data.pipe(debounceTime(2000)).subscribe((data)=>{
       this.troncal_selected = data.troncal;
       this.linea_selected = data.linea;
       this.corrida_selected = data.corrida;
+      this.corridaB = this.corrida_selected.map(corrida => " "+corrida);
       const corridas = this.corrida_selected.map(corrida => corrida.replace(/\//g, "_"));
       console.log("corridas remplazadas: ",corridas);
 
