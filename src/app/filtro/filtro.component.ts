@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 
 
 import {FormControl, FormsModule} from '@angular/forms';
@@ -23,11 +23,12 @@ interface data {
   imports: [FormsModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatButtonModule, MatDividerModule],
   templateUrl: './filtro.component.html',
   styleUrl: './filtro.component.css',
-  providers: [DataService]
+  providers: [DataService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FiltroComponent {
 
-  constructor( private service: DataService, private compartir: CompartirService){}
+  constructor( private compartir: CompartirService){}
 
 
   datosSeleccionados(troncal:string, linea:string, corrida:string[]){
@@ -36,7 +37,7 @@ export class FiltroComponent {
       linea: linea,
       corrida: corrida
     }
-      this.compartir.data.emit(data);
+      this.compartir.actualizarData(data);
 
   }
 

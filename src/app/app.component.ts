@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GraficasComponent } from './graficas/graficas.component';
 import { TablaComponent } from './tabla/tabla.component';
@@ -14,16 +14,12 @@ import { FiltroComponent } from './filtro/filtro.component';
   standalone: true,
   imports: [CommonModule,RouterOutlet, GraficasComponent, TablaComponent, FiltroComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent{
 
   constructor(){}
-
-  cambiaLinea(){
-    const sel = document.getElementById("tronclaes");
-    console.log(sel);
-  }
 
 
 }
