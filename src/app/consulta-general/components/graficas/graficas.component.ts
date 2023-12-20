@@ -1,6 +1,7 @@
 import { Component} from '@angular/core';
-import { BarrasComponent } from './barras/barras.component';
-import { AreasComponent } from './areas/areas.component';
+import { BarrasComponent } from './components/barras/barras.component';
+import { AreasComponent } from './components/areas/areas.component';
+
 
 
 @Component({

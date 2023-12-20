@@ -11,6 +11,19 @@ mat-select {
   font-size: .8em;
 }
 
+mat-form-field>div {
+  background: #a11818;
+}
+
 mat-option {
   font-size: .9em;
+}
+
+.sniper {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  top: 0;
+  right: 0;
+  margin-left: 30px;
 }

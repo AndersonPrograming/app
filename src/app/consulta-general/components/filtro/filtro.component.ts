@@ -1,15 +1,17 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 
-import {FormControl, FormsModule} from '@angular/forms';
+import {FormControl, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatSelectModule} from '@angular/material/select';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDividerModule} from '@angular/material/divider';
 import { Data } from '@angular/router';
-import { DataService } from '../services/data.service';
-import { CompartirService } from '../services/compartir.service';
+import { DataService } from '../../../services/data.service';
+import { CompartirService } from '../../../services/compartir.service';
+import { debounceTime } from 'rxjs';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 interface data {
@@ -20,15 +22,27 @@ interface data {
 @Component({
   selector: 'app-filtro',
   standalone: true,
-  imports: [FormsModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatButtonModule, MatDividerModule],
+  imports: [FormsModule, MatInputModule, MatSelectModule, MatFormFieldModule, MatButtonModule, MatDividerModule, MatProgressSpinnerModule, ReactiveFormsModule],
   templateUrl: './filtro.component.html',
   styleUrl: './filtro.component.css',
   providers: [DataService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FiltroComponent {
+export class FiltroComponent{
+  toppings = new FormControl('');
 
-  constructor( private compartir: CompartirService){}
+  constructor( private compartir: CompartirService,private cdm : ChangeDetectorRef) {
+    this.compartir.load.pipe(debounceTime(100)).subscribe((data:any)=>{
+        this.loader = data.loader;
+        console.log("loader", this.loader);
+        this.cdm.markForCheck();
+
+      });
+
+
+  }
+
+  loader!: boolean;
 
 
   datosSeleccionados(troncal:string, linea:string, corrida:string[]){
@@ -37,54 +51,57 @@ export class FiltroComponent {
       linea: linea,
       corrida: corrida
     }
+    if(data.troncal!=="" && data.linea!=="" && data.corrida.length!==0){
       this.compartir.actualizarData(data);
+
+    }
 
   }
 
 
-  selected: string = 'Sur';
-  selectedSur: string = 'AMAGUA10';
-  selectedCaribe: string = 'CARBAR12';
-  selectedCovenas: string = 'RETCOV16';
-  selectedCentral: string = 'FREHER68';
-  selectedOccidente: string = 'CARYUM10';
+  selected: string = '';
+  selectedSur: string = '';
+  selectedCaribe: string = '';
+  selectedCovenas: string = '';
+  selectedCentral: string = '';
+  selectedOccidente: string = '';
 
   // seleccion de sur
-  selectedSur1: string[] = ['BAKER-CAL-IMU-2019', 'LINSCAN-MFL-2022', 'ROSEN-MFL-2010', 'ROSEN-MFL-2013'];
-  selectedSur2: string[] = ['ROSEN-2012', 'ROSEN-MFL-2019'];
-  selectedSur3: string[] = ['ROSEN-MFL-2009','ROSEN-MFL-2019','ROSEN-MFL-2022'];
-  selectedSur4: string[] = ['ROSEN-MFL-2023'];
-  selectedSur5: string[] = ['BH-CAL/IMU-2021','ROSEN MFL-2009','ROSEN MFL-2014','ROSEN MFL-2021'];
-  selectedSur6: string[] = ['ROSEN-MFL-2009','ROSEN-MFL-2014','ROSEN-MFL-2021'];
-  selectedSur7: string[] = ['ROSEN-MFL-2011'];
-  selectedSur8: string[] = ['ROSEN-MFL-2011','ROSEN-MFL-2023'];
+  selectedSur1: string[] = [];
+  selectedSur2: string[] = [];
+  selectedSur3: string[] = [];
+  selectedSur4: string[] = [];
+  selectedSur5: string[] = [];
+  selectedSur6: string[] = [];
+  selectedSur7: string[] = [];
+  selectedSur8: string[] = [];
   /////////////////////////////////////////////////
   // seleccion de Ccaribe
-  selectedCaribe1: string[] = ['NDT MFL-2017','ROSEN MFL-2021','ROSEN UT-2015','ROSEN XYZ-2012'];
-  selectedCaribe2: string[] = ['ROSEN-2012'];
-  selectedCaribe3: string[] = ['ROSEN MFL-2019','ROSEN XYZ-2013'];
+  selectedCaribe1: string[] = [];
+  selectedCaribe2: string[] = [];
+  selectedCaribe3: string[] = [];
   /////////////////////////////////////////////////
   // seleccion de central
-  selectedCentral1: string[] = ['BAKER-CAL-2020','BAKER-CAL-2023', 'ROSEN-MFL-2014', 'ROSEN-MFL-2023'];
-  selectedCentral2: string[] = ['ROSEN-2016', 'ROSEN-2022'];
-  selectedCentral3: string[] = ['BAKER-CAL-2020','BAKER-CAL-2022','ROSEN-MFL-2013','ROSEN-MFL-2018','ROSEN-MFL-2023'];
-  selectedCentral4: string[] = ['BAKER-CAL-2020','BAKER-CAL-2022','ROSEN-MFL-2012','ROSEN-MFL-2019'];
-  selectedCentral5: string[] = ['BAKER-CAL-2020','ROSEN-MFL-2013','ROSEN-MFL-2023'];
-  selectedCentral6: string[] = ['ROSEN-MFL-2015','ROSEN-MFL-2022'];
+  selectedCentral1: string[] = [];
+  selectedCentral2: string[] = [];
+  selectedCentral3: string[] = [];
+  selectedCentral4: string[] = [];
+  selectedCentral5: string[] = [];
+  selectedCentral6: string[] = [];
   /////////////////////////////////////////////////
   // seleccion de coveñas
-  selectedCovenas1: string[] = ['ROSEN MFL-2020','ROSEN XYZ-2009', 'ROSEN XYZ-2013'];
+  selectedCovenas1: string[] = [];
 
   /////////////////////////////////////////////////
   // seleccion de occidente
-  selectedOccidente1: string[] = ['BAKER-CAL-IMU-2019', 'LINSCAN-MFL-2022', 'ROSEN-MFL-2010', 'ROSEN-MFL-2013'];
-  selectedOccidente2: string[] = ['ROSEN-2012', 'ROSEN-MFL-2019'];
-  selectedOccidente3: string[] = ['ROSEN-MFL-2009','ROSEN-MFL-2019','ROSEN-MFL-2022'];
-  selectedOccidente4: string[] = ['ROSEN-MFL-2023'];
-  selectedOccidente5: string[] = ['BH-CAL/IMU-2021','ROSEN MFL-2009','ROSEN MFL-2014','ROSEN MFL-2021'];
-  selectedOccidente6: string[] = ['ROSEN-MFL-2009','ROSEN-MFL-2014','ROSEN-MFL-2021'];
-  selectedOccidente7: string[] = ['ROSEN-MFL-2011'];
-  selectedOccidente8: string[] = ['ROSEN-MFL-2011','ROSEN-MFL-2023Occident'];
+  selectedOccidente1: string[] = [];
+  selectedOccidente2: string[] = [];
+  selectedOccidente3: string[] = [];
+  selectedOccidente4: string[] = [];
+  selectedOccidente5: string[] = [];
+  selectedOccidente6: string[] = [];
+  selectedOccidente7: string[] = [];
+  selectedOccidente8: string[] = [];
 
     troncales: data[] = [
     {value: 'Caribe', viewValue: 'CARIBE'},

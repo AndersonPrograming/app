@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { GraficasComponent } from './graficas/graficas.component';
-import { TablaComponent } from './tabla/tabla.component';
+import { GraficasComponent } from './consulta-general/components/graficas/graficas.component';
+import { TablaComponent } from './consulta-general/components/tabla/tabla.component';
 
 import { RouterOutlet } from '@angular/router';
-import { FiltroComponent } from './filtro/filtro.component';
+import { FiltroComponent } from './consulta-general/components/filtro/filtro.component';
 
 
 

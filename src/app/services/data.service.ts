@@ -11,14 +11,9 @@ export class DataService {
 
   constructor(public http:HttpClient) { }
 
-
-  getData():Observable<any>{
-    return this.http.get<any>(this.api);
-  }
-
-
   filterData(url:string):Observable<any>{
     const ruta = `http://localhost:3000/linea/${url}`;
+
     console.log("ruta",ruta);
     return this.http.get<any>(ruta);
 

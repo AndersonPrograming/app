@@ -5,10 +5,12 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatButtonModule} from '@angular/material/button';
 
-import {DataService} from '../services/data.service';
-import { CompartirService } from '../services/compartir.service';
+
+import {DataService} from '../../../services/data.service';
+import { CompartirService } from '../../../services/compartir.service';
 import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
-import { data } from '../interfaces/data';
+import {MatSnackBar} from '@angular/material/snack-bar';
+import { data } from '../../../interfaces/data';
 
 
 
@@ -24,9 +26,20 @@ import { data } from '../interfaces/data';
 })
 export class TablaComponent implements AfterViewInit, OnDestroy{
 
-  constructor(private service: DataService, private compartir: CompartirService) { }
+  constructor(private service: DataService, private compartir: CompartirService, private _snackBar: MatSnackBar, private cdm: ChangeDetectorRef) { }
+
+    openSnackBar(message: string) {
+    this._snackBar.open(message,'Ok', {
+      duration: 4000,
+      horizontalPosition: "start",
+      verticalPosition: "bottom",
+    });
+  }
 
     DATA:data[] = [];
+
+    loader!: boolean;
+    lastUrl: string = "";
 
     troncal_selected: string = "";
     linea_selected: string = "";
@@ -48,33 +61,66 @@ export class TablaComponent implements AfterViewInit, OnDestroy{
 
   @ViewChild(MatPaginator) paginator!: MatPaginator ;
 
-  private dataSubscription!: Subscription;
+  private miSuscripcion!: Subscription;
+  private miSuscripcion2!: Subscription;
+
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
 
+  }
+  ngOnInit(): void {
+
+    this.cdm.markForCheck();
+
     // me suscribo al evento de compartir data que me trae las varibles del filtro
-    this.compartir.data.pipe(debounceTime(2000)).subscribe((data)=>{
+    this.miSuscripcion2 = this.compartir.data.pipe(debounceTime(3000)).subscribe((data)=>{
       this.troncal_selected = data.troncal;
       this.linea_selected = data.linea;
       this.corrida_selected = data.corrida;
-      this.corridaB = this.corrida_selected.map(corrida => " "+corrida);
+      // this.corridaB = this.corrida_selected.map(corrida => " "+corrida);
       const corridas = this.corrida_selected.map(corrida => corrida.replace(/\//g, "_"));
-      console.log("corridas remplazadas: ",corridas);
 
-      // armo la url para hacer la consulta
+
+      if(data.troncal !== "" && data.linea !== "" && data.corrida.length > 0){
+        this.loader = true;
+      console.log("entrando en la condicion");
+        // armo la url para hacer la consulta
       this.url = this.getUrl(this.troncal_selected, this.linea_selected,corridas.join(","));
-      // con estas variables armo la url para hacer la consulta
-      this.service.filterData(this.url).subscribe((data)=>{
+
+      if(this.url !== this.lastUrl){
+        this.compartir.loader({loader: true});
+        // con estas variables armo la url para hacer la consulta
+      this.miSuscripcion = this.service.filterData(this.url).subscribe((data)=>{
+
+        // const perdida_metal = data.tipo_evento;
+        // console.log("tipo evento: ", data.map((d: { tipo_evento: any; }) => d.tipo_evento));
+
+
         this.DATA = data; // guardo la data en una variable del componente
         console.log(this.DATA);
         this.dataSource = new MatTableDataSource<data>(this.DATA); // actualizo la tabla
         this.dataSource.paginator = this.paginator; // actualizo el paginador
+        this.loader = false;
+        this.openSnackBar("Datos cargados correctamente !!!");
+        this.compartir.loader({loader: false});
+
       });
+      this.lastUrl = this.url;
+      }else{
+        console.log("no hay cambios en la url");
+      }
+
+
+
+      }
+
     });
   }
   ngOnDestroy(): void {
-  this.dataSubscription.unsubscribe();
+  // this.dataSubscription.unsubscribe();
+  this.miSuscripcion.unsubscribe();
+  this.miSuscripcion2.unsubscribe();
   }
 }
 
