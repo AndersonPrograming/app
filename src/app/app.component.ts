@@ -5,6 +5,9 @@ import { TablaComponent } from './consulta-general/components/tabla/tabla.compon
 
 import { RouterOutlet } from '@angular/router';
 import { FiltroComponent } from './consulta-general/components/filtro/filtro.component';
+import { HomeComponent } from './home/home.component';
+import { ConsultaGeneralComponent } from './consulta-general/consulta-general.component';
+import { GeoreferenciacionComponent } from './georeferenciacion/georeferenciacion.component';
 
 
 
@@ -12,10 +15,9 @@ import { FiltroComponent } from './consulta-general/components/filtro/filtro.com
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule,RouterOutlet, GraficasComponent, TablaComponent, FiltroComponent],
+  imports: [CommonModule,RouterOutlet,HomeComponent, ConsultaGeneralComponent,GeoreferenciacionComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrl: './app.component.css'
 })
 export class AppComponent{
 

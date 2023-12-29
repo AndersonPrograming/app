@@ -14,6 +14,7 @@ import { data } from '../../../interfaces/data';
 
 
 
+
 @Component({
   selector: 'app-tabla',
   standalone: true,
@@ -24,7 +25,7 @@ import { data } from '../../../interfaces/data';
   changeDetection: ChangeDetectionStrategy.OnPush
 
 })
-export class TablaComponent implements AfterViewInit, OnDestroy{
+export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
   constructor(private service: DataService, private compartir: CompartirService, private _snackBar: MatSnackBar, private cdm: ChangeDetectorRef) { }
 
@@ -38,7 +39,6 @@ export class TablaComponent implements AfterViewInit, OnDestroy{
 
     DATA:data[] = [];
 
-    loader!: boolean;
     lastUrl: string = "";
 
     troncal_selected: string = "";
@@ -67,14 +67,10 @@ export class TablaComponent implements AfterViewInit, OnDestroy{
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-
-  }
-  ngOnInit(): void {
-
     this.cdm.markForCheck();
 
     // me suscribo al evento de compartir data que me trae las varibles del filtro
-    this.miSuscripcion2 = this.compartir.data.pipe(debounceTime(3000)).subscribe((data)=>{
+      this.miSuscripcion2 = this.compartir.data.pipe(debounceTime(3000)).subscribe((data)=>{
       this.troncal_selected = data.troncal;
       this.linea_selected = data.linea;
       this.corrida_selected = data.corrida;
@@ -83,7 +79,7 @@ export class TablaComponent implements AfterViewInit, OnDestroy{
 
 
       if(data.troncal !== "" && data.linea !== "" && data.corrida.length > 0){
-        this.loader = true;
+
       console.log("entrando en la condicion");
         // armo la url para hacer la consulta
       this.url = this.getUrl(this.troncal_selected, this.linea_selected,corridas.join(","));
@@ -96,12 +92,21 @@ export class TablaComponent implements AfterViewInit, OnDestroy{
         // const perdida_metal = data.tipo_evento;
         // console.log("tipo evento: ", data.map((d: { tipo_evento: any; }) => d.tipo_evento));
 
+        // datos para la grafica de lineas
+        const diamEspe = data.map((data:any)=>{
+          return data.diametro / data.t_nominal;
+        })
+        this.compartir.enviarDiamEspe(diamEspe);
+
+        const altura = data.map((data:any)=>{
+          return data.altura;
+        });
+        this.compartir.enviarAltura(altura);
 
         this.DATA = data; // guardo la data en una variable del componente
         console.log(this.DATA);
         this.dataSource = new MatTableDataSource<data>(this.DATA); // actualizo la tabla
         this.dataSource.paginator = this.paginator; // actualizo el paginador
-        this.loader = false;
         this.openSnackBar("Datos cargados correctamente !!!");
         this.compartir.loader({loader: false});
 
@@ -116,11 +121,17 @@ export class TablaComponent implements AfterViewInit, OnDestroy{
       }
 
     });
+
+  }
+  ngOnInit(): void {
+
   }
   ngOnDestroy(): void {
-  // this.dataSubscription.unsubscribe();
-  this.miSuscripcion.unsubscribe();
-  this.miSuscripcion2.unsubscribe();
+  if (this.miSuscripcion || this.miSuscripcion2){
+    this.miSuscripcion.unsubscribe();
+    this.miSuscripcion2.unsubscribe();
+  }
+
   }
 }
 

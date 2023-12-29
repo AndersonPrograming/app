@@ -1,6 +1,8 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { CompartirService } from '../../../../../services/compartir.service';
 
 import {
   ChartComponent,
@@ -8,113 +10,138 @@ import {
   ApexChart,
   ApexXAxis,
   ApexDataLabels,
+  ApexStroke,
+  ApexMarkers,
   ApexYAxis,
-  ApexLegend,
-  ApexFill,
+  ApexGrid,
+  ApexTitleSubtitle,
+  ApexLegend
 } from "ng-apexcharts";
 
 export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  dataLabels: ApexDataLabels;
-  colors: string[];
-  legend: ApexLegend;
-  fill: ApexFill;
+  series: ApexAxisChartSeries | any;
+  chart: ApexChart | any;
+  xaxis: ApexXAxis | any;
+  stroke: ApexStroke | any;
+  dataLabels: ApexDataLabels | any;
+  markers: ApexMarkers | any;
+  tooltip: any; // ApexTooltip;
+  yaxis: ApexYAxis | any;
+  grid: ApexGrid | any;
+  legend: ApexLegend | any;
+  title: ApexTitleSubtitle | any;
 };
-
 
 @Component({
   selector: 'app-areas',
   standalone: true,
-  imports: [NgApexchartsModule],
+  imports:[NgApexchartsModule],
   templateUrl: './areas.component.html',
   styleUrl: './areas.component.css'
 })
-export class AreasComponent {
+export class AreasComponent{
 @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions: ChartOptions;
+  public chartOptions: Partial<ChartOptions>;
+  diam_espe!: number[];
+  altura!: number[];
 
-  constructor() {
-    this.chartOptions = {
+
+
+  constructor(private Compartir: CompartirService) {
+this.chartOptions = {
       series: [
         {
-          name: "South",
-          data: this.generateDayWiseTimeSeries(
-            new Date("11 Feb 2017 GMT").getTime(),
-            20,
-            {
-              min: 10,
-              max: 60
-            }
-          )
+          name: "Session Duration",
+          data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10]
         },
         {
-          name: "North",
-          data: this.generateDayWiseTimeSeries(
-            new Date("11 Feb 2017 GMT").getTime(),
-            20,
-            {
-              min: 10,
-              max: 20
-            }
-          )
+          name: "Page Views",
+          data: [35, 41, 62, 42, 13, 18, 29, 37, 36, 51, 32, 35]
         },
         {
-          name: "Central",
-          data: this.generateDayWiseTimeSeries(
-            new Date("11 Feb 2017 GMT").getTime(),
-            20,
-            {
-              min: 10,
-              max: 15
-            }
-          )
+          name: "Total Visits",
+          data: [87, 57, 74, 99, 75, 38, 62, 47, 82, 56, 45, 47]
         }
       ],
       chart: {
-        type: "area",
         height: 350,
-        stacked: true,
-        events: {
-          selection: function(chart, e) {
-            console.log(new Date(e.xaxis.min));
-          }
-        }
+        type: "line"
       },
-      colors: ["#008FFB", "#00E396", "#CED4DC"],
       dataLabels: {
         enabled: false
       },
-      fill: {
-        type: "gradient",
-        gradient: {
-          opacityFrom: 0.6,
-          opacityTo: 0.8
-        }
+      stroke: {
+        width: 5,
+        curve: "straight",
+        dashArray: [0, 8, 5]
+      },
+      title: {
+        text: "Page Statistics",
+        align: "left"
       },
       legend: {
-        position: "top",
-        horizontalAlign: "left"
+        tooltipHoverFormatter: function(val:any, opts:any) {
+          return (
+            val +
+            " - <strong>" +
+            opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
+            "</strong>"
+          );
+        }
+      },
+      markers: {
+        size: 0,
+        hover: {
+          sizeOffset: 6
+        }
       },
       xaxis: {
-        type: "datetime"
+        labels: {
+          trim: false
+        },
+        categories: [
+          "01 Jan",
+          "02 Jan",
+          "03 Jan",
+          "04 Jan",
+          "05 Jan",
+          "06 Jan",
+          "07 Jan",
+          "08 Jan",
+          "09 Jan",
+          "10 Jan",
+          "11 Jan",
+          "12 Jan"
+        ]
+      },
+      tooltip: {
+        y: [
+          {
+            title: {
+              formatter: function(val:any) {
+                return val + " (mins)";
+              }
+            }
+          },
+          {
+            title: {
+              formatter: function(val:any) {
+                return val + " per session";
+              }
+            }
+          },
+          {
+            title: {
+              formatter: function(val:any) {
+                return val;
+              }
+            }
+          }
+        ]
+      },
+      grid: {
+        borderColor: "#f1f1f1"
       }
     };
-}
-
-  public generateDayWiseTimeSeries = function(baseval:any, count:any, yrange:any) {
-    var i = 0;
-    var series = [];
-    while (i < count) {
-      var x = baseval;
-      var y =
-        Math.floor(Math.random() * (yrange.max - yrange.min + 1)) + yrange.min;
-
-      series.push([x, y]);
-      baseval += 86400000;
-      i++;
-    }
-    return series;
-  };
+  }
 }

@@ -6,7 +6,8 @@ import { GeoreferenciacionComponent } from './georeferenciacion/georeferenciacio
 
 export const routes: Routes = [
   { path: 'general', component: ConsultaGeneralComponent },
-  {path: '', redirectTo: 'home', pathMatch: 'full'},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   { path: 'home', component: HomeComponent },
-  { path: 'georeferenciacion', component: GeoreferenciacionComponent }
+  { path: 'georeferenciacion', component: GeoreferenciacionComponent },
+  {path: '**', component: HomeComponent}
 ];
