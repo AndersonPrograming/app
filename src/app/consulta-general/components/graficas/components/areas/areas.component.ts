@@ -16,7 +16,7 @@ import {
   ApexTitleSubtitle,
   ApexLegend
 } from "ng-apexcharts";
-import { debounceTime } from 'rxjs';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 
 
@@ -45,9 +45,22 @@ export class AreasComponent implements OnInit, OnDestroy{
 @ViewChild("chart") chart!: ChartComponent;
   public chartOptions: Partial<ChartOptions> | any;
 
+  private diamEspe: Subject<void> = new Subject<void>();
+  private disRef: Subject<void> = new Subject<void>();
+  private valSlider: Subject<void> = new Subject<void>();
+  private alt: Subject<void> = new Subject<void>();
+
 
   constructor(private Compartir: CompartirService) {}
   ngOnDestroy(): void {
+    this.diamEspe.next();
+    this.diamEspe.complete();
+    this.disRef.next();
+    this.disRef.complete();
+    this.valSlider.next();
+    this.valSlider.complete();
+    this.alt.next();
+    this.alt.complete();
 
   }
 
@@ -55,24 +68,24 @@ export class AreasComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
 
 
-      this.Compartir.diamEspe.subscribe((data: any) => {
+      this.Compartir.diamEspe$.subscribe((data: any) => {
       const diamEspe = data;
 
       this.chartOptions.series[0].data = diamEspe;
 
-      this.Compartir.valorSlider.pipe(debounceTime(3000)).subscribe((valor: any) => {
+      this.Compartir.valorSlider$.pipe(debounceTime(3000)).subscribe((valor: any) => {
         this.chartOptions.series[0].data = diamEspe.slice(valor[0], valor[1]);
         setTimeout(() => (window as any).dispatchEvent(new Event('resize')), .1);
       });
 
       this.chartOptions.yaxis[0].tickAmount = 4;
-      this.chartOptions.yaxis[0].min = Math.min(...diamEspe)-10;
-      this.chartOptions.yaxis[0].max = Math.max(...diamEspe);
+      // this.chartOptions.yaxis[0].min = Math.min(...diamEspe)-10;
+      // this.chartOptions.yaxis[0].max = Math.max(...diamEspe);
       setTimeout(() => (window as any).dispatchEvent(new Event('resize')), .1);
       });
 
 
-      this.Compartir.distancia_reg_ref.subscribe((data: any) => {
+      this.Compartir.distanciaRegRef$.subscribe((data: any) => {
 
         const min = data[0];
         const max = data[data.length-1];
@@ -94,7 +107,7 @@ export class AreasComponent implements OnInit, OnDestroy{
         }
 
         this.chartOptions.xaxis = x;
-        this.Compartir.valorSlider.pipe(debounceTime(3000)).subscribe((valor: any) => {
+        this.Compartir.valorSlider$.pipe(debounceTime(3000)).subscribe((valor: any) => {
           x.categories = data.slice(valor[0], valor[1]);
           x.min= data[valor[0]];
           x.max= data[valor[1]];
@@ -108,17 +121,17 @@ export class AreasComponent implements OnInit, OnDestroy{
 
       });
 
-      this.Compartir.altura.subscribe((data: any) => {
+      this.Compartir.altura$.subscribe((data: any) => {
       const altura = data;
 
 
       this.chartOptions.series[1].data = altura;
-      this.Compartir.valorSlider.pipe(debounceTime(3000)).subscribe((valor: any) => {
+      this.Compartir.valorSlider$.pipe(debounceTime(3000)).subscribe((valor: any) => {
         this.chartOptions.series[1].data = altura.slice(valor[0], valor[1]);
         setTimeout(() => (window as any).dispatchEvent(new Event('resize')), .1);
       });
-      this.chartOptions.yaxis[1].min = Math.min(...altura)-10;
-      this.chartOptions.yaxis[1].max = Math.max(...altura);
+      // this.chartOptions.yaxis[1].min = Math.min(...altura)-10;
+      // this.chartOptions.yaxis[1].max = Math.max(...altura);
       this.chartOptions.yaxis[1].tickAmount = 4;
       setTimeout(() => (window as any).dispatchEvent(new Event('resize')), .1);
 

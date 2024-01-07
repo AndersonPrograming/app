@@ -32,7 +32,7 @@ export class FiltroComponent{
   toppings = new FormControl('');
 
   constructor( private compartir: CompartirService,private cdm : ChangeDetectorRef) {
-    this.compartir.load.pipe(debounceTime(100)).subscribe((data:any)=>{
+    this.compartir.load$.pipe(debounceTime(100)).subscribe((data:any)=>{
         this.loader = data.loader;
         console.log("loader", this.loader);
         this.cdm.markForCheck();

@@ -61,9 +61,8 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
   @ViewChild(MatPaginator) paginator!: MatPaginator ;
 
-  private miSuscripcion!: Subscription;
-  private miSuscripcion2!: Subscription;
-
+  private dataSub: Subject<void> = new Subject<void>();
+  private filDataSub: Subject<void> = new Subject<void>();
 
 
   ngAfterViewInit() {
@@ -71,7 +70,7 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
     this.cdm.markForCheck();
 
     // me suscribo al evento de compartir data que me trae las varibles del filtro
-      this.miSuscripcion2 = this.compartir.data.pipe(debounceTime(3000)).subscribe((data)=>{
+      this.compartir.data$.pipe(debounceTime(3000)).subscribe((data)=>{
       this.troncal_selected = data.troncal;
       this.linea_selected = data.linea;
       this.corrida_selected = data.corrida;
@@ -88,26 +87,29 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
       if(this.url !== this.lastUrl){
         this.compartir.loader({loader: true});
         // con estas variables armo la url para hacer la consulta
-      this.miSuscripcion = this.service.filterData(this.url).subscribe((data)=>{
+      this.service.filterData(this.url).subscribe((data)=>{
 
         // const perdida_metal = data.tipo_evento;
         // console.log("tipo evento: ", data.map((d: { tipo_evento: any; }) => d.tipo_evento));
 
-        // datos para la grafica de lineas
-        const diamEspe = data.map((data:any)=>{
-          const diametro = data.diametro / data.t_nominal;
-          return  parseFloat(diametro.toFixed(3));
+        // datos para la grafica de linea
+        const diamEspe = data.map((val:any)=>{
+          if(val.diametro <= 0 || val.t_nominal <= 0){
+            return 0;
+          }
+          const diamEspe = val.diametro / val.t_nominal;
+          return  parseFloat(diamEspe.toFixed(3));
         })
         this.compartir.enviarDiamEspe(diamEspe);
 
-        const distanciaRegRef = data.map((data:any)=>{
-          const distancia = data.distancia_reg_ref;
+        const distanciaRegRef = data.map((val:any)=>{
+          const distancia = val.distancia_reg_ref;
           return parseFloat(distancia.toFixed(3));
         });
         this.compartir.enviarDistanciaRegRef(distanciaRegRef);
 
 
-        const altura = data.map((data:any)=>data.altura);
+        const altura = data.map((val:any)=>val.altura);
         this.compartir.enviarAltura(altura);
 
         this.DATA = data; // guardo la data en una variable del componente
@@ -134,11 +136,10 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
   }
   ngOnDestroy(): void {
-    if(this.miSuscripcion || this.miSuscripcion2){
-      this.miSuscripcion.unsubscribe();
-      this.miSuscripcion2.unsubscribe();
-    }
-
+    this.dataSub.next();
+    this.dataSub.complete();
+    this.filDataSub.next();
+    this.filDataSub.complete();
   }
 }
 

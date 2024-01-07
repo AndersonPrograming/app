@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import { BarrasComponent } from './components/barras/barras.component';
 import { AreasComponent } from './components/areas/areas.component';
 import {MatSlider, MatSliderModule} from '@angular/material/slider';
 import { FormsModule } from '@angular/forms';
 import { CompartirService } from '../../../services/compartir.service';
-import { debounceTime } from 'rxjs';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 
 
 
@@ -15,13 +15,19 @@ import { debounceTime } from 'rxjs';
   templateUrl: './graficas.component.html',
   styleUrl: './graficas.component.css'
 })
-export class GraficasComponent implements OnInit {
+export class GraficasComponent implements OnInit, OnDestroy {
   mostrarSlider: boolean = false;
 
+  private comMax: Subject<void> = new Subject<void>();
+
   constructor(private Compartir: CompartirService) { }
+  ngOnDestroy(): void {
+    this.comMax.next();
+    this.comMax.complete();
+  }
 
   ngOnInit(): void {
-    this.Compartir.maximo.pipe(debounceTime(3000)).subscribe((data: any) => {
+    this.Compartir.maximo$.pipe(debounceTime(3000)).subscribe((data: any) => {
       this.maximo = data;
 
       console.log('llego el dato', data);

@@ -1,48 +1,54 @@
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CompartirService {
 
-  @Output() data: EventEmitter<any> = new EventEmitter();
-  @Output() load: EventEmitter<any> = new EventEmitter();
-  @Output() diamEspe: EventEmitter<number[]> = new EventEmitter();
-  @Output() altura: EventEmitter<number[]> = new EventEmitter();
-  @Output() distancia_reg_ref: EventEmitter<any[]> = new EventEmitter();
-  @Output() maximo: EventEmitter<any[]> = new EventEmitter();
-  @Output() valorSlider: EventEmitter<any[]> = new EventEmitter();
+  private dataSubject: Subject<any> = new Subject<any>();
+  private diamEspeSubject: Subject<bigint[]> = new Subject<bigint[]>();
+  private alturaSubject: Subject<bigint[]> = new Subject<bigint[]>();
+  private distanciaRegRefSubject: Subject<any[]> = new Subject<any[]>();
+  private loadSubject: Subject<any> = new Subject<any>();
+  private maximoSubject: Subject<any> = new Subject<any>();
+  private valorSliderSubject: Subject<any> = new Subject<any>();
 
+  data$ = this.dataSubject.asObservable();
+  diamEspe$ = this.diamEspeSubject.asObservable();
+  altura$ = this.alturaSubject.asObservable();
+  distanciaRegRef$ = this.distanciaRegRefSubject.asObservable();
+  load$ = this.loadSubject.asObservable();
+  maximo$ = this.maximoSubject.asObservable();
+  valorSlider$ = this.valorSliderSubject.asObservable();
 
   actualizarData(data: any) {
-    this.data.next(data);
+    this.dataSubject.next(data);
+  }
 
+  enviarDiamEspe(data: bigint[]) {
+    this.diamEspeSubject.next(data);
   }
-  enviarDiamEspe(data: any[]) {
-    this.diamEspe.next(data);
+
+  enviarAltura(data: bigint[]) {
+    this.alturaSubject.next(data);
   }
-  enviarAltura(data: any[]) {
-    this.altura.next(data);
-  }
+
   enviarDistanciaRegRef(data: number[]) {
-    this.distancia_reg_ref.next(data);
+    this.distanciaRegRefSubject.next(data);
   }
 
   loader(data: any) {
-    this.load.next(data);
+    this.loadSubject.next(data);
   }
 
   dataSlider(data: any) {
-    this.maximo.next(data);
+    this.maximoSubject.next(data);
   }
+
   enviarSlider(data: any) {
-    this.valorSlider.next(data);
+    this.valorSliderSubject.next(data);
   }
 
-
-  constructor() {
-  }
-
-
+  constructor() {}
 }
-
