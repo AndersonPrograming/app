@@ -1,18 +1,26 @@
 <div>
+  @if(mostrarSlider == true){
+  <mat-slider discrete [min]="minimo" [max]="maximo" (input)="getDataSlider()" color="primary">
+    <input [(ngModel)]="valorInicial" matSliderStartThumb>
+    <input [(ngModel)]="valorFinal" matSliderEndThumb>
+  </mat-slider>
+  }
+
   <div class="row pb-4">
+
     <div class="col-md-5">
       <div class="graficas">
         <h5>Elementos de la tubería </h5>
         <app-barras></app-barras>
       </div>
     </div>
-    <div class="col-md-5">
+    <div class="col-md-6">
       <div class="graficas">
         <h5 class="p-2">(Diámetro / Espesor) vs Distancia de registro </h5>
         <app-areas></app-areas>
       </div>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-1">
       <div class="botones">
         <button class="boton">Diámetro</button>
         <button class="boton">Espesor</button>

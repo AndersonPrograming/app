@@ -22,8 +22,10 @@
     "@angular/router": "^17.0.0",
     "apexcharts": "^3.44.2",
     "bootstrap-icons": "^1.11.2",
+    "chart.js": "^4.4.1",
     "lodash": "^4.17.21",
     "ng-apexcharts": "^1.8.0",
+    "ng2-charts": "^5.0.4",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"

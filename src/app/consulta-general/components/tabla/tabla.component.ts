@@ -8,7 +8,7 @@ import {MatButtonModule} from '@angular/material/button';
 
 import {DataService} from '../../../services/data.service';
 import { CompartirService } from '../../../services/compartir.service';
-import { Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import {MatSnackBar} from '@angular/material/snack-bar';
 import { data } from '../../../interfaces/data';
 
@@ -65,6 +65,7 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
   private miSuscripcion2!: Subscription;
 
 
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.cdm.markForCheck();
@@ -94,13 +95,19 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
         // datos para la grafica de lineas
         const diamEspe = data.map((data:any)=>{
-          return data.diametro / data.t_nominal;
+          const diametro = data.diametro / data.t_nominal;
+          return  parseFloat(diametro.toFixed(3));
         })
         this.compartir.enviarDiamEspe(diamEspe);
 
-        const altura = data.map((data:any)=>{
-          return data.altura;
+        const distanciaRegRef = data.map((data:any)=>{
+          const distancia = data.distancia_reg_ref;
+          return parseFloat(distancia.toFixed(3));
         });
+        this.compartir.enviarDistanciaRegRef(distanciaRegRef);
+
+
+        const altura = data.map((data:any)=>data.altura);
         this.compartir.enviarAltura(altura);
 
         this.DATA = data; // guardo la data en una variable del componente
@@ -127,10 +134,10 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
   }
   ngOnDestroy(): void {
-  if (this.miSuscripcion || this.miSuscripcion2){
-    this.miSuscripcion.unsubscribe();
-    this.miSuscripcion2.unsubscribe();
-  }
+    if(this.miSuscripcion || this.miSuscripcion2){
+      this.miSuscripcion.unsubscribe();
+      this.miSuscripcion2.unsubscribe();
+    }
 
   }
 }
