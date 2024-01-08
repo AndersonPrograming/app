@@ -130,7 +130,7 @@ export class AreasComponent implements OnInit, OnDestroy{
         this.chartOptions.series[1].data = altura.slice(valor[0], valor[1]);
         setTimeout(() => (window as any).dispatchEvent(new Event('resize')), .1);
       });
-      // this.chartOptions.yaxis[1].min = Math.min(...altura)-10;
+      this.chartOptions.yaxis[1].min = Math.min(...altura)-10;
       // this.chartOptions.yaxis[1].max = Math.max(...altura);
       this.chartOptions.yaxis[1].tickAmount = 4;
       setTimeout(() => (window as any).dispatchEvent(new Event('resize')), .1);
