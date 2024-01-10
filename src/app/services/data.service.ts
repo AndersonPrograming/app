@@ -7,7 +7,6 @@ import { Observable } from 'rxjs';
 })
 export class DataService {
 
-  private api = "http://localhost:3000/linea/Occidente/CARZAR10/BH-CAL-2023";
 
   constructor(public http:HttpClient) { }
 
@@ -18,6 +17,16 @@ export class DataService {
     return this.http.get<any>(ruta);
 
   }
+
+  getDataGrafica(url:string):Observable<any>{
+    const ruta = `http://localhost:3000/graficas/${url}`;
+
+    console.log("ruta",ruta);
+    return this.http.get<any>(ruta);
+
+  }
+
+
 
 
 }

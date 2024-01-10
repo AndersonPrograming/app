@@ -13,8 +13,11 @@ export class CompartirService {
   private loadSubject: Subject<any> = new Subject<any>();
   private maximoSubject: Subject<any> = new Subject<any>();
   private valorSliderSubject: Subject<any> = new Subject<any>();
+   private urlSubject: Subject<any> = new Subject<any>();
 
   data$ = this.dataSubject.asObservable();
+  url$ = this.urlSubject.asObservable();
+
   diamEspe$ = this.diamEspeSubject.asObservable();
   altura$ = this.alturaSubject.asObservable();
   distanciaRegRef$ = this.distanciaRegRefSubject.asObservable();
@@ -24,6 +27,10 @@ export class CompartirService {
 
   actualizarData(data: any) {
     this.dataSubject.next(data);
+  }
+
+  sendUrl(data: any) {
+    this.urlSubject.next(data);
   }
 
   enviarDiamEspe(data: bigint[]) {
@@ -49,6 +56,7 @@ export class CompartirService {
   enviarSlider(data: any) {
     this.valorSliderSubject.next(data);
   }
+
 
   constructor() {}
 }
