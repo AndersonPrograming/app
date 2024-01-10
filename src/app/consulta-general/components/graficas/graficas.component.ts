@@ -28,13 +28,7 @@ export class GraficasComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    this.Compartir.maximo$.pipe(debounceTime(3000)).subscribe((data: any) => {
-      this.maximo = data;
 
-      console.log('llego el dato', data);
-      this.mostrarSlider = true;
-
-    });
   }
 
 

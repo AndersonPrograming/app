@@ -17,8 +17,8 @@ import {
   ApexLegend
 } from "ng-apexcharts";
 import { Subject, debounceTime, takeUntil } from 'rxjs';
-import { last } from 'lodash';
-import { DataService } from '../../../../../services/data.service';
+
+import { GraficaService } from '../../../../../services/grafica.service';
 
 
 
@@ -50,7 +50,7 @@ export class AreasComponent implements OnInit, OnDestroy{
   private url: Subject<void> = new Subject<void>();
 
 
-  constructor(private Compartir: CompartirService, private data: DataService) {}
+  constructor(private Compartir: CompartirService, private data: GraficaService) {}
   ngOnDestroy(): void {
     this.url.next();
     this.url.complete();
@@ -69,11 +69,12 @@ export class AreasComponent implements OnInit, OnDestroy{
         if(this.lastUrl != data){
 
 
-          this.data.getDataGrafica(data).subscribe((datag: any) => {
+          this.data.getDataGrafica(data).subscribe(async (datag: any) => {
+            console.log(datag);
 
-            const diamEspe = datag.map((a: any) => (a.diametro/a.t_nominal).toFixed(3));
-            const altura = datag.map((a: any) => a.altura);
-            const distanciaRegRef = datag.map((a: any) => parseFloat(a.distancia_reg));
+            const diamEspe = await datag.map((a: any) => (a.diamEspe).toFixed(3));
+            const altura = await datag.map((a: any) => a.altura);
+            const distanciaRegRef = await datag.map((a: any) => parseFloat(a.distancia_reg));
 
             let min = distanciaRegRef[0];
             let max = distanciaRegRef[distanciaRegRef.length-1];
@@ -98,8 +99,8 @@ export class AreasComponent implements OnInit, OnDestroy{
             const minimo = altura.reduce((a: any, b: any) => Math.min(a, b));
             const maximo = altura.reduce((a: any, b: any) => Math.max(a, b));
 
-            const minimoDiamEspe = diamEspe.reduce((a: any, b: any) => Math.min(a, b));
-            const maximoDiamEspe = diamEspe.reduce((a: any, b: any) => Math.max(a, b));
+            const minimoDiamEspe = await diamEspe.reduce((a: any, b: any) => Math.min(a, b));
+            const maximoDiamEspe = await diamEspe.reduce((a: any, b: any) => Math.max(a, b));
 
             console.log("minimo", minimo);
             console.log("maximo", maximo);
@@ -112,6 +113,9 @@ export class AreasComponent implements OnInit, OnDestroy{
             this.chartOptions.series[0].data = diamEspe;
             this.chartOptions.yaxis[0].min = minimoDiamEspe;
             this.chartOptions.yaxis[0].max = maximoDiamEspe;
+            if(diamEspe.length > 0 && altura.length > 0 && distanciaRegRef.length > 0){
+              console.log("entro");
+            }
 
 
 

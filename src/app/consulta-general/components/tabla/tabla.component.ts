@@ -61,14 +61,14 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
   @ViewChild(MatPaginator) paginator!: MatPaginator ;
 
-  private data: Subject<void> = new Subject<void>();
+  private data!: Subscription;
 
 
   ngAfterViewInit() {
 
 
 
-      this.compartir.data$.pipe(debounceTime(3000)).subscribe((data)=>{
+      this.data = this.compartir.data$.pipe(debounceTime(3000)).subscribe(async (data)=>{
 
       this.troncal_selected = data.troncal;
       this.linea_selected = data.linea;
@@ -81,22 +81,25 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
         this.url = this.getUrl(this.troncal_selected, this.linea_selected,corridas.join(","));
 
-        this.compartir.sendUrl(this.url);
 
         if(this.url !== this.lastUrl){
 
           this.compartir.loader({loader: true});
           // con estas variables armo la url para hacer la consulta
-          this.service.filterData(this.url).subscribe((data)=>{
+          this.service.filterData(this.url).subscribe(async (data)=>{
 
-            this.DATA = data; // guardo la data en una variable del componente
+            this.DATA = await data; // guardo la data en una variable del componente
             console.log(this.DATA);
             this.dataSource = new MatTableDataSource<data>(this.DATA); // actualizo la tabla
             this.dataSource.paginator = this.paginator; // actualizo el paginador
-            this.openSnackBar("Datos cargados correctamente !!!");
+            this.openSnackBar("Datos cargados !!!");
+
+            this.compartir.sendUrl(this.url);
             this.compartir.loader({loader: false});
 
+
            });
+        ;
 
         this.lastUrl = this.url;
 
@@ -115,8 +118,9 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
   }
   ngOnDestroy(): void {
-    this.data.next();
-    this.data.complete();
+    if(this.data){
+      this.data.unsubscribe();
+    }
   }
 }
 
