@@ -1,7 +1,7 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { CompartirService } from '../../../../../services/compartir.service';
+import { CompartirService } from '../../../services/compartir.service';
 
 import {
   ChartComponent,
@@ -17,6 +17,7 @@ import {
   ApexLegend
 } from "ng-apexcharts";
 import { Subject, takeUntil } from 'rxjs';
+import { data } from '../../../interfaces/data';
 
 
 
@@ -35,21 +36,19 @@ export type ChartOptions = {
 };
 
 @Component({
-  selector: 'app-areas',
+  selector: 'app-lineas',
   standalone: true,
   imports:[NgApexchartsModule],
-  templateUrl: './areas.component.html',
-  styleUrl: './areas.component.css'
+  templateUrl: './lineas.component.html',
+  styleUrl: './lineas.component.css'
 })
-export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
+export class LineasComponent implements OnInit, OnDestroy, AfterViewInit{
 
 @ViewChild("chart") chart!: ChartComponent;
 
   public chartOptions: Partial<ChartOptions> = {};
 
   private unsubscribe$ = new Subject<void>();
-
-  chartClass = 'my-custom-chart';
 
 
 
@@ -65,7 +64,7 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
 
   lastUrl: string = "";
 
-  updateAltura(data: any[]){
+ async updateAltura(data: any[]){
 
         const minimo = data.reduce((a: number, b: number) => {
             if (isNaN(b)) {
@@ -81,64 +80,41 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
             return Math.max(a, b);
         });
 
-        console.log("minimo", minimo);
-        console.log("maximo", maximo);
-        this.chartOptions.yaxis[1].min = minimo;
-        this.chartOptions.yaxis[1].max = maximo;
-        this.chartOptions.yaxis[1].tickAmount = 2;
+        this.chartOptions.series[0].min = minimo;
+        this.chartOptions.series[0].max = maximo;
+        this.chartOptions.series[0].tickAmount = 3;
         this.chart.updateOptions(this.chartOptions);
         this.cdr.detectChanges();
 
   }
 
-  updateDistanciaRegRef(data: any[]){
+  async updateDistanciaRegRef(data:any){
         const min = data[0];
         const max = data[data.length-1];
 
         this.chartOptions.xaxis.min = min;
         this.chartOptions.xaxis.max = max;
         this.chartOptions.xaxis.tickAmount = 2;
-        this.chart.updateOptions(this.chartOptions);
+        await this.chart.updateOptions(this.chartOptions);
         this.cdr.detectChanges();
   }
 
 
 
+
   ngOnInit(): void {
-     this.Compartir.altura$.pipe(takeUntil(this.unsubscribe$)).subscribe((data: any[]) => {
-        this.chartOptions.series[1].data = data;
-        this.updateAltura(data);
+    this.Compartir.distanciaRegRef$.pipe(takeUntil(this.unsubscribe$)).subscribe((distancia:any[]) => {
+        console.log("distancia", distancia);
+        this.chartOptions.xaxis.categories = distancia;
+
+        // await this.updateDistanciaRegRef(distancia);
       });
 
-    this.Compartir.diamEspe$.pipe(takeUntil(this.unsubscribe$)).subscribe((data: any[]) => {
-
-      const minimo = data.reduce((a: number, b: number) => {
-            if (isNaN(b)) {
-              return a;
-            }
-            return Math.min(a, b);
-        });
-
-        const maximo = data.reduce((a: number, b: number) => {
-            if (isNaN(b)) {
-              return a;
-            }
-            return Math.max(a, b);
-        });
-
-        this.chartOptions.series[0].data = data;
-        this.chartOptions.yaxis[0].tickAmount = 2;
-        this.chartOptions.yaxis[0].min = minimo;
-        this.chartOptions.yaxis[0].max = maximo;
-
+     this.Compartir.altura$.pipe(takeUntil(this.unsubscribe$)).subscribe((altura:any[]) => {
+        console.log("altura", altura);
+        this.chartOptions.series[0].data = altura;
+        this.updateAltura(altura);
       });
-
-      this.Compartir.distanciaRegRef$.pipe(takeUntil(this.unsubscribe$)).subscribe((data: any[]) => {
-        this.chartOptions.xaxis.categories = data;
-        this.updateDistanciaRegRef(data);
-      });
-
-
 
 
 
@@ -147,22 +123,14 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
     this.chartOptions = {
       series: [
         {
-            color: '#E90101',
-            name: "Mín. Díam/Espe",
-            data: [],
-            type: 'line', // Tipo de serie (línea)
-            yAxisIndex: 0 ,// Asignar a primer eje Y
-        },
-        {
             color: '#33FF33',
             name: 'Promedio de Altura (m)',
             data: [],
-            type: 'line', // Tipo de serie (línea)
-            yAxisIndex: 1 // Asignar a segundo eje Y
+
         },
     ],
     chart: {
-      height: 320,
+      height: 350,
       type: "line",
       toolbar: {
         show:true,
@@ -177,27 +145,27 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
       enabled: false,
     },
     stroke: {
-      width: [2, 2],
-      curve: "stepline",
-      dashArray: [0, 0],
+      width: 2,
+      curve: "smooth",
+      dashArray: 0,
 
     },
     legend: {
       position: "top",
       horizontalAlign: "left",
-      // tooltipHoverFormatter: function(val:number, opts:any) {
-      //   return (
-      //     val +
-      //     "  <strong>" +
-      //     opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
-      //     "</strong>"
-      //   );
-      // },
+      tooltipHoverFormatter: function(val:number, opts:any) {
+        return (
+          val +
+          "  <strong>" +
+          opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
+          "</strong>"
+        );
+      }
     },
     markers: {
       size: 0,
       hover: {
-        sizeOffset: 3
+        sizeOffset: 6
       },
       strokeWidth: 3,
     },
@@ -211,10 +179,10 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
         }
       }
     },
-    yaxis: [
+    yaxis:
       {
         title: {
-        text: "Mín. Díam/Espe"
+        text: "Promedio de Altura (m)"
         },
         labels: {
         formatter: function (value:number) {
@@ -223,19 +191,7 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
         }
 
       },
-      {
-          opposite: true,
-          title: {
-              text: 'Altura (m)',
-          },
-          labels: {
-          formatter: function (value:number) {
-            return value.toFixed(3);
-          }
-        }
 
-      },
-    ],
     grid: {
       borderColor: '#f1f1f1',
 

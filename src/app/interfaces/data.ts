@@ -5,7 +5,7 @@ export interface data{
   corrida_ref: string;
   provedor_corrida: string;
   emparejdo: string;
-  diam_espe: string;
+  diam_espe: number;
   distancia_reg: number;
   distancia_reg_ref: number;
   latitud_n: number;

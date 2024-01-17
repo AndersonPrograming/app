@@ -29,14 +29,6 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
   constructor(private service: DataService, private compartir: CompartirService, private _snackBar: MatSnackBar, private cdm: ChangeDetectorRef) { }
 
-    openSnackBar(message: string) {
-    this._snackBar.open(message,'Ok', {
-      duration: 4000,
-      horizontalPosition: "start",
-      verticalPosition: "bottom",
-    });
-  }
-
     DATA:data[] = [];
 
     lastUrl: string = "";
@@ -86,15 +78,17 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
 
           this.compartir.loader({loader: true});
           // con estas variables armo la url para hacer la consulta
-          this.service.filterData(this.url).subscribe(async (data)=>{
+          this.service.filterData(this.url).subscribe(async (datos)=>{
 
-            this.DATA = await data; // guardo la data en una variable del componente
+            this.DATA = await datos; // guardo la data en una variable del componente
             console.log(this.DATA);
             this.dataSource = new MatTableDataSource<data>(this.DATA); // actualizo la tabla
             this.dataSource.paginator = this.paginator; // actualizo el paginador
-            this.openSnackBar("Datos cargados !!!");
 
-            this.compartir.sendUrl(this.url);
+            this.compartir.enviarDiamEspe(datos.map((val:any)=>parseFloat(val.diam_espe)));
+            this.compartir.enviarAltura(datos.map((val:any)=>val.altura));
+            this.compartir.enviarDistanciaRegRef(datos.map((val:any)=>val.distancia_reg_ref));
+
             this.compartir.loader({loader: false});
 
 

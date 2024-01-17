@@ -7,7 +7,8 @@ import {
   ChartComponent,
   ApexDataLabels,
   ApexXAxis,
-  ApexPlotOptions
+  ApexPlotOptions,
+  ApexYAxis
 } from "ng-apexcharts";
 
 export type ChartOptions = {
@@ -35,16 +36,21 @@ export class BarrasComponent {
       series: [
         {
           name: "basic",
-          data: [400, 430, 448, 470, 540, 580, 690]
+          data: [400, 430, 448, 470, 540, 580, 326]
         }
       ],
       chart: {
         type: "bar",
-        height: 350
+        height: 320,
+        zoom: {
+          enabled: false
+        }
       },
       plotOptions: {
         bar: {
-          horizontal: true
+          horizontal: true,
+          columnWidth: "55%",
+          borderRadius: 4
         }
       },
       dataLabels: {
@@ -60,7 +66,8 @@ export class BarrasComponent {
           "Anomalia de diametro",
           "Otras anomalias de corrosión"
         ]
-      }
+      },
+
     };
   }
 

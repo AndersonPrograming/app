@@ -1,0 +1,22 @@
+::ng-deep .apexcharts-tooltip {
+  background-color: #000000b4 !important;
+  /* Color de fondo del tooltip */
+  color: #ffffff !important;
+  /* Color del texto del tooltip */
+}
+
+::ng-deep .apexcharts-tooltip-title {
+  background-color: #00000015 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #ffffff15 !important;
+}
+
+::ng-deep .apexcharts-xaxistooltip {
+  background-color: #000000b4 !important;
+  /* Cambia este color al que desees */
+}
+
+::ng-deep .apexcharts-xaxistooltip * {
+  color: #ffffff !important;
+  /* Cambia el color del texto si es necesario */
+}

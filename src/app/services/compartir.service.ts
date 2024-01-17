@@ -7,8 +7,8 @@ import { Subject } from 'rxjs';
 export class CompartirService {
 
   private dataSubject: Subject<any> = new Subject<any>();
-  private diamEspeSubject: Subject<bigint[]> = new Subject<bigint[]>();
-  private alturaSubject: Subject<bigint[]> = new Subject<bigint[]>();
+  private diamEspeSubject: Subject<any[]> = new Subject<any[]>();
+  private alturaSubject: Subject<any[]> = new Subject<any[]>();
   private distanciaRegRefSubject: Subject<any[]> = new Subject<any[]>();
   private loadSubject: Subject<any> = new Subject<any>();
   private maximoSubject: Subject<any> = new Subject<any>();
@@ -33,15 +33,15 @@ export class CompartirService {
     this.urlSubject.next(data);
   }
 
-  enviarDiamEspe(data: bigint[]) {
+  enviarDiamEspe(data: any[]) {
     this.diamEspeSubject.next(data);
   }
 
-  enviarAltura(data: bigint[]) {
+  enviarAltura(data: any[]) {
     this.alturaSubject.next(data);
   }
 
-  enviarDistanciaRegRef(data: number[]) {
+  enviarDistanciaRegRef(data: any[]) {
     this.distanciaRegRefSubject.next(data);
   }
 

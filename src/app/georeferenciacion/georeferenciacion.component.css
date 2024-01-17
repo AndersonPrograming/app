@@ -1,7 +1,21 @@
+.graficas {
+  width: 100%;
+  height: max-content;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.114);
+}
+
+h5 {
+  color: rgb(3, 114, 136);
+  font-weight: bold;
+  padding: 10px;
+}
+
 .botones {
   display: flex;
   justify-content: flex-end;
   z-index: 1000;
   gap: 1rem;
+  color: aquamarine;
 
 }
