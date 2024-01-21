@@ -85,7 +85,7 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
             this.dataSource = new MatTableDataSource<data>(this.DATA); // actualizo la tabla
             this.dataSource.paginator = this.paginator; // actualizo el paginador
 
-            this.compartir.enviarDiamEspe(datos.map((val:any)=>parseFloat(val.diam_espe)));
+            this.compartir.enviarDiamEspe(datos.map((val:any)=>val.diam_espe));
             this.compartir.enviarAltura(datos.map((val:any)=>val.altura));
             this.compartir.enviarDistanciaRegRef(datos.map((val:any)=>val.distancia_reg_ref));
 

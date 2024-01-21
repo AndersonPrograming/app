@@ -49,7 +49,6 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
 
   private unsubscribe$ = new Subject<void>();
 
-  chartClass = 'my-custom-chart';
 
 
 
@@ -165,7 +164,7 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
       height: 320,
       type: "line",
       toolbar: {
-        show:true,
+        show:false,
 
       },
       animations: {
@@ -185,14 +184,6 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
     legend: {
       position: "top",
       horizontalAlign: "left",
-      // tooltipHoverFormatter: function(val:number, opts:any) {
-      //   return (
-      //     val +
-      //     "  <strong>" +
-      //     opts.w.globals.series[opts.seriesIndex][opts.dataPointIndex] +
-      //     "</strong>"
-      //   );
-      // },
     },
     markers: {
       size: 0,
@@ -204,7 +195,15 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
     xaxis:{
       type: 'numeric',
       categories: [],
-      title: { text: 'Distancia del reg. Referencia [m]' },
+      title: {
+        text: 'Distancia del reg. Referencia [m]',
+        style: {
+                fontWeight: '200',
+                fontSize: '.9rem',
+                fontFamily: 'Arial, sans-serif',
+                color: 'rgb(3, 114, 136)',
+              }
+      },
       labels: {
         formatter: function (value:number) {
           return String(value.toFixed(3));
@@ -214,7 +213,13 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
     yaxis: [
       {
         title: {
-        text: "Mín. Díam/Espe"
+        text: "Mín. Díam/Espe",
+        style: {
+                fontWeight: '200',
+                fontSize: '.9rem',
+                fontFamily: 'Arial, sans-serif',
+                color: 'rgb(3, 114, 136)',
+              }
         },
         labels: {
         formatter: function (value:number) {
@@ -227,6 +232,12 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
           opposite: true,
           title: {
               text: 'Altura (m)',
+              style: {
+                fontWeight: '200',
+                fontSize: '.9rem',
+                fontFamily: 'Arial, sans-serif',
+                color: 'rgb(3, 114, 136)',
+              }
           },
           labels: {
           formatter: function (value:number) {

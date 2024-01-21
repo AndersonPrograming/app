@@ -1,12 +1,11 @@
-import { Component, AfterViewInit, OnDestroy, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, AfterViewInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FiltroComponent } from '../consulta-general/components/filtro/filtro.component';
 import {MatButtonModule} from '@angular/material/button';
-import { LineasComponent } from './components/lineas/lineas.component';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { CompartirService } from '../services/compartir.service';
-import { data } from '../interfaces/data';
 import { DataService } from '../services/data.service';
+import { LineasComponent } from './components/lineas/lineas.component';
 
 @Component({
   selector: 'app-georeferenciacion',
@@ -14,12 +13,11 @@ import { DataService } from '../services/data.service';
   imports: [ RouterLink, FiltroComponent, MatButtonModule, LineasComponent],
   templateUrl: './georeferenciacion.component.html',
   styleUrl: './georeferenciacion.component.css',
-  providers: [DataService],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  providers: [DataService, CompartirService]
 })
 export class GeoreferenciacionComponent implements AfterViewInit, OnDestroy{
   loader: boolean = false;
-    constructor(private compartir: CompartirService, private service: DataService, private cdm: ChangeDetectorRef) {
+    constructor(private service: DataService, private cdm: ChangeDetectorRef, private compartir: CompartirService) {
       this.compartir.load$.pipe(debounceTime(100)).subscribe((data:any)=>{
         this.loader = data.loader;
         console.log("loader", this.loader);
@@ -51,7 +49,8 @@ export class GeoreferenciacionComponent implements AfterViewInit, OnDestroy{
     }
   ngAfterViewInit(): void {
 
-     this.compartir.data$.pipe(debounceTime(3000), takeUntil(this.unsuscribe$)).subscribe(async (data)=>{
+
+      this.compartir.data$.pipe(debounceTime(3000)).subscribe(async (data)=>{
 
       this.troncal_selected = data.troncal;
       this.linea_selected = data.linea;
@@ -62,16 +61,18 @@ export class GeoreferenciacionComponent implements AfterViewInit, OnDestroy{
 
       if(data.troncal !== "" && data.linea !== "" && data.corrida.length > 0){
 
-        this.url =  this.getUrl(this.troncal_selected, this.linea_selected, corridas.join(","));
+        this.url = this.getUrl(this.troncal_selected, this.linea_selected,corridas.join(","));
 
 
         if(this.url !== this.lastUrl){
 
           this.compartir.loader({loader: true});
           // con estas variables armo la url para hacer la consulta
-          this.service.getDataGrafica(this.url).pipe(takeUntil(this.unsuscribe$)).subscribe((datos)=>{
-            this.compartir.enviarDistanciaRegRef(datos.map((val: any) => val.distancia_reg));
-            this.compartir.enviarAltura(datos.map((val: any) => val.altura));
+          this.service.filterData(this.url).subscribe(async (datos)=>{
+
+            this.compartir.enviarDiamEspe(datos.map((val:any)=>val.diam_espe));
+            this.compartir.enviarAltura(datos.map((val:any)=>val.altura));
+            this.compartir.enviarDistanciaRegRef(datos.map((val:any)=>val.distancia_reg_ref));
 
             this.compartir.loader({loader: false});
 

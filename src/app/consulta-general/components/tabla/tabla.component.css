@@ -3,6 +3,8 @@
   width: 100%;
   overflow-x: auto;
   padding: 10px;
+  position: relative;
+  bottom: -50px;
 }
 
 mat-table {

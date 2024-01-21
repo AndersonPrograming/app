@@ -176,7 +176,7 @@ export class FiltroComponent{
     {value: 'ROSEN XYZ-2012', viewValue: 'ROSEN XYZ-2012'},
   ];
    caribe2: data[] = [
-    {value: 'ROSEN-2012', viewValue: 'ROSEN MFL-2019'},
+    {value: 'ROSEN MFL-2019', viewValue: 'ROSEN MFL-2019'},
   ];
 
    caribe3: data[] = [

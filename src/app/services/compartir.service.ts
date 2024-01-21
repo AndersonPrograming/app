@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import {Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class CompartirService {
   private loadSubject: Subject<any> = new Subject<any>();
   private maximoSubject: Subject<any> = new Subject<any>();
   private valorSliderSubject: Subject<any> = new Subject<any>();
-   private urlSubject: Subject<any> = new Subject<any>();
+  private urlSubject: Subject<any> = new Subject<any>();
 
   data$ = this.dataSubject.asObservable();
   url$ = this.urlSubject.asObservable();
@@ -44,6 +44,7 @@ export class CompartirService {
   enviarDistanciaRegRef(data: any[]) {
     this.distanciaRegRefSubject.next(data);
   }
+
 
   loader(data: any) {
     this.loadSubject.next(data);
