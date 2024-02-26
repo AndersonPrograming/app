@@ -12,7 +12,7 @@ export class DataService {
   constructor(private http:HttpClient) { }
 
   filterData(url:string):Observable<any>{
-    const ruta = `http://localhost:3000/linea/${url}`;
+    const ruta = ` https://foscanapi.azurewebsites.net/linea/${url}`;
 
     console.log("ruta",ruta);
     return this.http.get<any>(ruta);
@@ -20,7 +20,7 @@ export class DataService {
   }
 
   getDataGrafica(url:string):Observable<any>{
-    const ruta = `http://localhost:3000/graficas/${url}`;
+    const ruta = ` https://foscanapi.azurewebsites.net/graficas/${url}`;
 
     console.log("ruta",ruta);
     return this.http.get<any>(ruta);

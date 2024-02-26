@@ -11,7 +11,7 @@ export class LoginService {
 
   login(credenciales: any){
     console.log('Credenciales:', credenciales);
-    const ruta = 'http://localhost:3000/login';
+    const ruta = ' https://foscanapi.azurewebsites.net/login';
 
     console.log("ruta",ruta);
     return this.http.post(ruta, credenciales);
