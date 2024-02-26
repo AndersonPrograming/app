@@ -7,9 +7,10 @@ import { LoginComponent } from './login/login.component';
 
 export const routes: Routes = [
   { path: 'general', component: ConsultaGeneralComponent },
-  {path: '', redirectTo: '/home', pathMatch: 'full'},
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
   { path: 'home', component: HomeComponent },
   { path: 'georeferenciacion', component: GeoreferenciacionComponent },
   { path: 'login', component: LoginComponent},
-  {path: '**', component: HomeComponent}
+  {path: '**', component: LoginComponent},
+  {path: '404', component: LoginComponent}
 ];

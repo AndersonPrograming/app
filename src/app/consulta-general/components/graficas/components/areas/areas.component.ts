@@ -161,10 +161,19 @@ export class AreasComponent implements OnInit, OnDestroy, AfterViewInit{
         },
     ],
     chart: {
-      height: 320,
+      height:350,
       type: "line",
       toolbar: {
-        show:false,
+        show:true,
+        tools: {
+          download: false,
+          selection: false,
+          zoom: false,
+          zoomin: false,
+          zoomout: false,
+          pan: false,
+          reset: false
+        },
 
       },
       animations: {

@@ -1,19 +1,20 @@
 <div class="contenedor">
 
   <div class="login">
-    <form class="example-form" (ngSubmit)="onSubmit()">
-      <div class="title">
-        <h1>Inicio de Sesión</h1>
-      </div>
+    <form class="example-form" [formGroup]="loginForm" (ngSubmit)="login()">
+      <h2 class="text-center">Iniciar Sesión</h2>
+      @if (flat === 1) {
+      <div class="text-bg-warning p-3">usuario o contraseña incorretos</div>
+      }
       <mat-form-field class="example-full-width">
         <mat-label>Usuario</mat-label>
-        <input matInput required [(ngModel)]="username">
+        <input matInput formControlName="username">
       </mat-form-field>
 
       <div class="example-container">
         <mat-form-field>
           <mat-label>Ingresa Contraseña</mat-label>
-          <input matInput [type]="hide ? 'password' : 'text'" [(ngModel)]="password">
+          <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
           <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hide">
             <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>

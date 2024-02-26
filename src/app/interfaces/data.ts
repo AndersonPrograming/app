@@ -33,4 +33,5 @@ export interface data{
   ot_intervencion: string;
   documento_soporte: string;
   observaciones: string;
+  agrupacion: string;
 }

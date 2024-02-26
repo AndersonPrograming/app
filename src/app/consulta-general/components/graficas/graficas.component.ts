@@ -39,7 +39,6 @@ export class GraficasComponent implements OnInit, OnDestroy {
   valorFinal!: number;
 
   getDataSlider() {
-    this.Compartir.enviarSlider([this.valorInicial, this.valorFinal]);
 
 }
 

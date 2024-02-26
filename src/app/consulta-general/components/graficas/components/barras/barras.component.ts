@@ -1,22 +1,30 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
-import { NgApexchartsModule } from 'ng-apexcharts';
+import { CompartirService } from '../../../../../services/compartir.service';
+import { data } from '../../../../../interfaces/data';
+
 import {
+  ChartComponent,
   ApexAxisChartSeries,
   ApexChart,
-  ChartComponent,
-  ApexDataLabels,
   ApexXAxis,
+  ApexDataLabels,
+  ApexGrid,
   ApexPlotOptions,
-  ApexYAxis
+  NgApexchartsModule,
+  ApexTooltip
 } from "ng-apexcharts";
 
+
+
 export type ChartOptions = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  xaxis: ApexXAxis;
+  series: ApexAxisChartSeries | any;
+  chart: ApexChart | any;
+  xaxis: ApexXAxis | any;
+  dataLabels: ApexDataLabels | any;
+  tooltip: ApexTooltip | any;
+  grid: ApexGrid | any;
+  plotOptions: ApexPlotOptions | any;
 };
 
 @Component({
@@ -26,49 +34,73 @@ export type ChartOptions = {
   templateUrl: './barras.component.html',
   styleUrl: './barras.component.css'
 })
-export class BarrasComponent {
+export class BarrasComponent implements OnInit{
 
   @ViewChild("chart") chart!: ChartComponent;
-  public chartOptions: ChartOptions;
+  public chartOptions: ChartOptions | any;
 
-  constructor() {
+  data: data[] = [];
+
+  constructor( private Compartir: CompartirService) {
     this.chartOptions = {
       series: [
         {
-          name: "basic",
-          data: [400, 430, 448, 470, 540, 580, 326]
-        }
+          color: '#30A0A0',
+          name: "Recuento de Tipo Evento",
+          data: [],
+        },
       ],
       chart: {
         type: "bar",
-        height: 320,
-        zoom: {
-          enabled: false
+        height: 350,
+        toolbar: {
+          show: true,
         }
+
       },
       plotOptions: {
         bar: {
           horizontal: true,
           columnWidth: "55%",
-          borderRadius: 4
+          borderRadius: 1,
+        },
+        zoom: {
+          enabled: true
         }
       },
       dataLabels: {
         enabled: false
+
       },
       xaxis: {
-        categories: [
-          "Perdida del metal",
-          "Construccion de tuberia",
-          "Acsesorio de tuberia",
-          "reparacion",
-          "Anomalia de manuactura",
-          "Anomalia de diametro",
-          "Otras anomalias de corrosión"
-        ]
+        categories: [],
+        tickPlacement: 'on'
       },
-
+      grid: {
+      borderColor: '#f1f1f1',
+      },
+      tooltip: {
+        enabled: true,
+        y: {
+          formatter: function (val: any) {
+            return val;
+          }
+        }
+      }
     };
+
+  }
+  ngOnInit(): void {
+    this.Compartir.barras$.pipe().subscribe((data) => {
+      console.log("data", data);
+      this.data = data;
+      this.chartOptions.xaxis.categories = data.map((d: any) => d.cadena);
+      this.chartOptions.series[0].data = data.map((d: any) => {
+        return { x: d.cadena, y: d.repeticiones, otro: d.otro };
+      });
+
+      this.chart.updateOptions(this.chartOptions);
+    });
   }
 
 }

@@ -47,7 +47,7 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
     }
 
 
-  displayedColumns: string[] = ['diam_espe','linea','emparejado', 'provedor_corrida','distancia_reg','distancia_reg_ref','corrida_ref', 'latitud_n','longitud_w','altura','tipo_evento','identificacion_evento','numero_junta','diametro','t_nominal','distancia_reg_ja','p_horaria','long','ancho','prof','prof_def_d','pared_int_ext','fecha_actualizacion','estado_intervencion','tipo_intervencion','fecha_intervencion','dr_inicio','dr_fin','longitud','ot_intervencion','documento_soporte','observaciones','troncal'  ];
+  displayedColumns: string[] = ['diam_espe','linea','emparejado', 'provedor_corrida','distancia_reg','distancia_reg_ref','corrida_ref', 'latitud_n','longitud_w','altura','tipo_evento','identificacion_evento','numero_junta','diametro','t_nominal','distancia_reg_ja','p_horaria','long','ancho','prof','prof_def_d','pared_int_ext','fecha_actualizacion','estado_intervencion','tipo_intervencion','fecha_intervencion','dr_inicio','dr_fin','longitud','ot_intervencion','documento_soporte','observaciones','troncal','agrupacion'  ];
 
   dataSource = new MatTableDataSource<data>(this.DATA);
 
@@ -88,6 +88,10 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
             this.compartir.enviarDiamEspe(datos.map((val:any)=>val.diam_espe));
             this.compartir.enviarAltura(datos.map((val:any)=>val.altura));
             this.compartir.enviarDistanciaRegRef(datos.map((val:any)=>val.distancia_reg_ref));
+            const repeticiones = this.contarRepeticiones(datos);
+
+            repeticiones.sort((a, b) => b.repeticiones - a.repeticiones);
+            this.compartir.enviarBarras(repeticiones);
 
             this.compartir.loader({loader: false});
 
@@ -116,5 +120,33 @@ export class TablaComponent implements AfterViewInit, OnDestroy, OnInit{
       this.data.unsubscribe();
     }
   }
+  contarRepeticiones(arr:any[]) {
+  // Objeto para almacenar la frecuencia de cada cadena
+  const frecuencia:any ={};
+  // Iterar sobre el arreglo y contar las repeticiones
+  arr.map((val:any)=>val.agrupacion).forEach((elemento:any) => {
+    frecuencia[elemento] = (frecuencia[elemento] || 0) + 1;
+
+  });
+
+
+  // Crear un arreglo de resultados con las cadenas únicas y sus repeticiones
+  const resultados = Object.keys(frecuencia).map((elemento) => {
+    const cadena = elemento;
+    const repeticiones = frecuencia[elemento];
+    const elementosFiltrados = arr.filter((val: any) => val.agrupacion === cadena);
+
+    // Encontrar el valor máximo de la columna prof_def_d
+    const valorMaximo = elementosFiltrados.reduce((max, val) => Math.max(max, parseFloat(val.prof_def_d)), 0);
+
+    return {
+      cadena,
+      repeticiones,
+      def_de_d: valorMaximo,
+    };
+   });
+   return resultados;
+}
+
 }
 

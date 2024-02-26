@@ -12,7 +12,7 @@ export class CompartirService {
   private distanciaRegRefSubject: Subject<any[]> = new Subject<any[]>();
   private loadSubject: Subject<any> = new Subject<any>();
   private maximoSubject: Subject<any> = new Subject<any>();
-  private valorSliderSubject: Subject<any> = new Subject<any>();
+  private barrasSubject: Subject<any> = new Subject<any>();
   private urlSubject: Subject<any> = new Subject<any>();
 
   data$ = this.dataSubject.asObservable();
@@ -23,7 +23,7 @@ export class CompartirService {
   distanciaRegRef$ = this.distanciaRegRefSubject.asObservable();
   load$ = this.loadSubject.asObservable();
   maximo$ = this.maximoSubject.asObservable();
-  valorSlider$ = this.valorSliderSubject.asObservable();
+  barras$ = this.barrasSubject.asObservable();
 
   actualizarData(data: any) {
     this.dataSubject.next(data);
@@ -54,8 +54,18 @@ export class CompartirService {
     this.maximoSubject.next(data);
   }
 
-  enviarSlider(data: any) {
-    this.valorSliderSubject.next(data);
+  enviarBarras(data: any) {
+    this.barrasSubject.next(data);
+  }
+
+  isLoggedIn = false;
+
+  login() {
+    this.isLoggedIn = true;
+  }
+
+  logout() {
+    this.isLoggedIn = false;
   }
 
 

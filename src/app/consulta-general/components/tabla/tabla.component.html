@@ -140,6 +140,10 @@
       <th mat-header-cell *matHeaderCellDef class="text-center"><b>Troncal </b> </th>
       <td mat-cell *matCellDef="let element" class="text-center"> {{element.Troncal}} </td>
     </ng-container>
+    <ng-container matColumnDef="agrupacion">
+      <th mat-header-cell *matHeaderCellDef class="text-center"><b>Agrupacion </b> </th>
+      <td mat-cell *matCellDef="let element" class="text-center"> {{element.agrupacion}} </td>
+    </ng-container>
 
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

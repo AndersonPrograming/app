@@ -9,7 +9,7 @@ import { data } from '../interfaces/data';
 export class DataService {
 
 
-  constructor(public http:HttpClient) { }
+  constructor(private http:HttpClient) { }
 
   filterData(url:string):Observable<any>{
     const ruta = `http://localhost:3000/linea/${url}`;
